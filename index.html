@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="학생 명단을 빠르고 균등하게 랜덤 조로 배정하는 도구"
+    />
+    <title>학생 랜덤 조 구성</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <div class="hero__inner">
+        <p class="eyebrow">교실 활동 도우미</p>
+        <h1>학생 랜덤 조 구성</h1>
+        <p class="hero__description">
+          학생 명단을 입력하면 누락 없이 균등하게 조를 나눕니다.
+        </p>
+      </div>
+    </header>
+
+    <main class="page">
+      <section class="panel" aria-labelledby="settings-title">
+        <div class="section-heading">
+          <div>
+            <p class="step">1. 조 구성 설정</p>
+            <h2 id="settings-title">명단과 조 조건을 입력하세요</h2>
+          </div>
+          <button class="text-button no-print" id="reset-button" type="button">
+            모두 초기화
+          </button>
+        </div>
+
+        <form id="grouping-form" novalidate>
+          <div class="field">
+            <div class="label-row">
+              <label for="student-roster">학생 명단</label>
+              <span id="student-count" class="count-badge" aria-live="polite"
+                >0명</span
+              >
+            </div>
+            <textarea
+              id="student-roster"
+              name="studentRoster"
+              rows="9"
+              maxlength="10000"
+              placeholder="한 줄에 한 명씩 또는 쉼표로 구분해 입력하세요.&#10;예) 김민준, 이서연, 박지후"
+              aria-describedby="roster-help duplicate-note"
+              required
+            ></textarea>
+            <div class="field-note-row">
+              <p id="roster-help" class="field-note">
+                줄바꿈과 쉼표를 모두 사용할 수 있습니다.
+              </p>
+              <p id="duplicate-note" class="field-note">
+                동명이인은 번호로 구분해주세요.
+              </p>
+            </div>
+          </div>
+
+          <fieldset class="mode-fieldset">
+            <legend>구성 방식</legend>
+            <div class="mode-options">
+              <label class="mode-option">
+                <input
+                  type="radio"
+                  name="groupMode"
+                  value="count"
+                  checked
+                />
+                <span>
+                  <strong>조 개수</strong>
+                  <small>원하는 조의 개수를 정합니다.</small>
+                </span>
+              </label>
+              <label class="mode-option">
+                <input type="radio" name="groupMode" value="size" />
+                <span>
+                  <strong>한 조당 인원</strong>
+                  <small>인원을 기준으로 조를 만듭니다.</small>
+                </span>
+              </label>
+            </div>
+          </fieldset>
+
+          <div class="number-row">
+            <div class="field number-field">
+              <label id="group-number-label" for="group-number">조 개수</label>
+              <input
+                id="group-number"
+                name="groupNumber"
+                type="number"
+                min="1"
+                step="1"
+                inputmode="numeric"
+                value="4"
+                aria-describedby="group-number-help"
+                required
+              />
+              <p id="group-number-help" class="field-note">
+                학생 수보다 작거나 같아야 합니다.
+              </p>
+            </div>
+            <button class="primary-button" type="submit">
+              <span aria-hidden="true">✦</span>
+              랜덤 조 구성
+            </button>
+          </div>
+
+          <p id="error-message" class="message message--error" role="alert" hidden></p>
+        </form>
+      </section>
+
+      <section
+        class="result-section"
+        id="result-section"
+        aria-labelledby="result-title"
+        hidden
+      >
+        <div class="result-heading">
+          <div>
+            <p class="step">2. 조 구성 결과</p>
+            <h2 id="result-title">조가 구성되었습니다</h2>
+            <p id="result-summary" class="result-summary"></p>
+          </div>
+          <div class="result-actions no-print">
+            <button id="reshuffle-button" class="secondary-button" type="button">
+              다시 배정
+            </button>
+            <button id="copy-button" class="secondary-button" type="button">
+              결과 복사
+            </button>
+            <button id="print-button" class="secondary-button" type="button">
+              인쇄
+            </button>
+          </div>
+        </div>
+
+        <div id="groups-container" class="groups-grid"></div>
+
+        <p id="status-message" class="message message--success" aria-live="polite" hidden></p>
+
+        <div id="copy-fallback" class="copy-fallback no-print" hidden>
+          <label for="copy-text">아래 텍스트를 선택해 복사하세요.</label>
+          <textarea id="copy-text" rows="8" readonly></textarea>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer no-print">
+      <p>학생 명단은 브라우저에서만 처리되며 서버에 저장되지 않습니다.</p>
+    </footer>
+
+    <script type="module" src="./src/app.js"></script>
+  </body>
+</html>
